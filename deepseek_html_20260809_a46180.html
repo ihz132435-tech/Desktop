@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>《出师表》——诸葛亮 | 古文测试</title>
+    <style>
+        :root {
+            --bg: #f5f0e8;
+            --paper: #fdfaf3;
+            --text: #3e2f1c;
+            --text-light: #5c4a2e;
+            --accent: #8b4513;
+            --gold: #b8860b;
+            --red-seal: #c41e3a;
+            --border: #d4c5a9;
+            --shadow: rgba(62, 47, 28, 0.12);
+            --correct: #2d7d46;
+            --incorrect: #c0392b;
+            --highlight: #fef3c7;
+            --btn-bg: #8b4513;
+            --btn-hover: #a0522d;
+            --tab-active: #fdfaf3;
+            --card-bg: #fffef9;
+            --ink: #2c2416;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'STSong', 'Songti SC', 'Noto Serif SC', 'SimSun', 'KaiTi', '楷体', '华文楷体', '华文宋体', '宋体', 'Georgia', 'Times New Roman', serif;
+            background-color: var(--bg);
+            background-image:
+                radial-gradient(ellipse at 20% 20%, rgba(139, 69, 19, 0.03) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 70%, rgba(184, 134, 11, 0.04) 0%, transparent 50%),
+                url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 5 L55 30 L30 55 L5 30Z' fill='none' stroke='%23d4c5a9' stroke-width='0.3' opacity='0.4'/%3E%3C/svg%3E");
+            background-size: 100% 100%, 100% 100%, 60px 60px;
+            min-height: 100vh;
+            color: var(--text);
+            line-height: 1.8;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* 顶部装饰 */
+        .top-ornament {
+            width: 100%;
+            max-width: 900px;
+            text-align: center;
+            margin-bottom: 8px;
+            position: relative;
+        }
+        .top-ornament::before,
+        .top-ornament::after {
+            content: '◆';
+            font-size: 10px;
+            color: var(--gold);
+            letter-spacing: 20px;
+            display: block;
+            opacity: 0.6;
+        }
+        .top-ornament::after {
+            content: '◆';
+            letter-spacing: 20px;
+            margin-top: -2px;
+        }
+
+        /* 主容器 */
+        .main-container {
+            width: 100%;
+            max-width: 900px;
+            background: var(--paper);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            box-shadow:
+                0 2px 20px var(--shadow),
+                0 0 0 8px rgba(212, 197, 169, 0.15),
+                0 0 0 9px rgba(139, 69, 19, 0.08);
+            padding: 40px 35px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* 纸张纹理 */
+        .main-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                repeating-linear-gradient(0deg,
+                    transparent,
+                    transparent 28px,
+                    rgba(180, 160, 130, 0.06) 28px,
+                    rgba(180, 160, 130, 0.06) 29px);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .main-container>* {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* 印章装饰 */
+        .seal {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            width: 56px;
+            height: 56px;
+            border: 3px solid var(--red-seal);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform: rotate(12deg);
+            color: var(--red-seal);
+            font-size: 14px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            writing-mode: vertical-rl;
+            text-orientation: upright;
+            opacity: 0.75;
+            z-index: 2;
+            user-select: none;
+            pointer-events: none;
+        }
+
+        /* 标题 */
+        .title-section {
+            text-align: center;
+            margin-bottom: 28px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+            position: relative;
+        }
+        .main-title {
+            font-size: 2.2em;
+            font-weight: bold;
+            color: var(--ink);
+            letter-spacing: 4px;
+            margin-bottom: 4px;
+            font-family: 'STKaiti', 'KaiTi', '楷体', '华文楷体', 'STSong', 'Songti SC', serif;
+        }
+        .sub-title {
+            font-size: 1em;
+            color: var(--text-light);
+            letter-spacing: 2px;
+            margin-top: 4px;
+            font-style: italic;
+        }
+        .author {
+            font-size: 1.1em;
+            color: var(--accent);
+            letter-spacing: 2px;
+            margin-top: 2px;
+        }
+
+        /* 导航标签 */
+        .tab-nav {
+            display: flex;
+            gap: 0;
+            margin-bottom: 24px;
+            border-bottom: 2px solid var(--border);
+            flex-wrap: wrap;
+        }
+        .tab-btn {
+            padding: 10px 22px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 1em;
+            font-family: inherit;
+            color: var(--text-light);
+            letter-spacing: 2px;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+            transition: all 0.3s ease;
+            position: relative;
+            white-space: nowrap;
+        }
+        .tab-btn:hover {
+            color: var(--accent);
+            background: rgba(139, 69, 19, 0.04);
+        }
+        .tab-btn.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+            font-weight: bold;
+            background: rgba(139, 69, 19, 0.03);
+        }
+
+        /* 内容区 */
+        .tab-content {
+            display: none;
+            animation: fadeSlideIn 0.4s ease;
+        }
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 原文样式 */
+        .original-text {
+            font-size: 1.15em;
+            line-height: 2.2;
+            letter-spacing: 1px;
+            text-align: justify;
+            color: var(--ink);
+            column-count: 1;
+        }
+        @media (min-width: 700px) {
+            .original-text {
+                column-count: 2;
+                column-gap: 40px;
+                column-rule: 1px dotted var(--border);
+            }
+        }
+        .original-text p {
+            margin-bottom: 0.8em;
+            text-indent: 2em;
+            break-inside: avoid;
+        }
+        .original-text .highlight-phrase {
+            background: var(--highlight);
+            padding: 2px 6px;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: background 0.3s;
+            border-bottom: 1px dashed var(--gold);
+        }
+        .original-text .highlight-phrase:hover {
+            background: #fde68a;
+        }
+
+        /* 注释气泡 */
+        .tooltip-inline {
+            position: relative;
+            cursor: help;
+            border-bottom: 1px dotted var(--accent);
+        }
+        .tooltip-inline:hover .tooltip-box {
+            display: block;
+        }
+        .tooltip-box {
+            display: none;
+            position: absolute;
+            bottom: 120%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #fffef5;
+            border: 1px solid var(--border);
+            padding: 8px 14px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            white-space: nowrap;
+            z-index: 10;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+            color: var(--text);
+            letter-spacing: 1px;
+            min-width: 100px;
+            text-align: center;
+        }
+
+        /* 测试题样式 */
+        .quiz-section h3 {
+            font-size: 1.3em;
+            color: var(--accent);
+            margin-bottom: 18px;
+            letter-spacing: 2px;
+            text-align: center;
+            padding-bottom: 10px;
+            border-bottom: 1px dotted var(--border);
+        }
+        .quiz-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 18px 20px;
+            margin-bottom: 16px;
+            transition: all 0.3s ease;
+        }
+        .quiz-item:hover {
+            box-shadow: 0 4px 14px var(--shadow);
+        }
+        .quiz-question {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--ink);
+            letter-spacing: 1px;
+            font-size: 1.05em;
+        }
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .quiz-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 9px 14px;
+            border: 1px solid #e8dfcd;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            background: #fefdf8;
+            letter-spacing: 1px;
+        }
+        .quiz-option:hover {
+            background: #fef9e7;
+            border-color: var(--gold);
+        }
+        .quiz-option input[type="radio"] {
+            accent-color: var(--accent);
+            width: 17px;
+            height: 17px;
+            cursor: pointer;
+        }
+        .quiz-option.correct-choice {
+            background: #e6f4ea;
+            border-color: var(--correct);
+            font-weight: bold;
+            color: var(--correct);
+        }
+        .quiz-option.wrong-choice {
+            background: #fdecea;
+            border-color: var(--incorrect);
+            color: var(--incorrect);
+        }
+        .quiz-feedback {
+            margin-top: 8px;
+            font-size: 0.9em;
+            padding: 6px 12px;
+            border-radius: 4px;
+            display: none;
+            letter-spacing: 1px;
+        }
+        .quiz-feedback.show {
+            display: block;
+        }
+        .quiz-feedback.correct {
+            background: #e6f4ea;
+            color: var(--correct);
+        }
+        .quiz-feedback.incorrect {
+            background: #fdecea;
+            color: var(--incorrect);
+        }
+
+        /* 填空测试 */
+        .fill-blank-text {
+            font-size: 1.1em;
+            line-height: 2.4;
+            letter-spacing: 1px;
+            color: var(--ink);
+            text-align: justify;
+        }
+        .fill-blank-text .blank-input {
+            display: inline-block;
+            width: 80px;
+            border: none;
+            border-bottom: 2px solid var(--accent);
+            background: transparent;
+            font-family: inherit;
+            font-size: 1em;
+            text-align: center;
+            color: var(--accent);
+            padding: 2px 6px;
+            margin: 0 3px;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            outline: none;
+        }
+        .fill-blank-text .blank-input:focus {
+            border-bottom-color: var(--gold);
+            background: var(--highlight);
+            width: 90px;
+        }
+        .fill-blank-text .blank-input.correct-fill {
+            border-bottom-color: var(--correct);
+            color: var(--correct);
+            background: #e6f4ea;
+        }
+        .fill-blank-text .blank-input.wrong-fill {
+            border-bottom-color: var(--incorrect);
+            color: var(--incorrect);
+            background: #fdecea;
+        }
+
+        /* 按钮 */
+        .btn {
+            display: inline-block;
+            padding: 10px 24px;
+            background: var(--btn-bg);
+            color: #fdfaf3;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 1em;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        .btn:hover {
+            background: var(--btn-hover);
+            box-shadow: 0 4px 14px rgba(139, 69, 19, 0.3);
+            transform: translateY(-2px);
+        }
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--accent);
+            color: var(--accent);
+            padding: 8px 22px;
+        }
+        .btn-outline:hover {
+            background: var(--accent);
+            color: #fdfaf3;
+        }
+        .btn-sm {
+            padding: 6px 14px;
+            font-size: 0.9em;
+            letter-spacing: 1px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        /* 得分区 */
+        .score-display {
+            text-align: center;
+            font-size: 1.3em;
+            padding: 16px;
+            margin: 16px 0;
+            background: var(--highlight);
+            border-radius: 8px;
+            border: 1px solid var(--gold);
+            letter-spacing: 2px;
+            display: none;
+        }
+        .score-display.show {
+            display: block;
+            animation: fadeSlideIn 0.5s ease;
+        }
+        .score-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        /* 页脚 */
+        .footer-note {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.85em;
+            color: #a09080;
+            letter-spacing: 2px;
+        }
+
+        /* 响应式 */
+        @media (max-width: 600px) {
+            .main-container {
+                padding: 20px 14px;
+                margin: 0 4px;
+            }
+            .main-title {
+                font-size: 1.5em;
+                letter-spacing: 2px;
+            }
+            .seal {
+                width: 40px;
+                height: 40px;
+                font-size: 10px;
+                top: 18px;
+                right: 18px;
+            }
+            .tab-btn {
+                padding: 8px 12px;
+                font-size: 0.85em;
+                letter-spacing: 1px;
+            }
+            .original-text {
+                font-size: 1em;
+                column-count: 1;
+            }
+            .fill-blank-text .blank-input {
+                width: 55px;
+            }
+            .fill-blank-text .blank-input:focus {
+                width: 65px;
+            }
+            body {
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 顶部装饰 -->
+    <div class="top-ornament"></div>
+
+    <!-- 主容器 -->
+    <div class="main-container">
+        <!-- 印章 -->
+        <div class="seal">古文<br>测试</div>
+
+        <!-- 标题 -->
+        <div class="title-section">
+            <h1 class="main-title">出 师 表</h1>
+            <p class="author">【三国】诸葛亮</p>
+            <p class="sub-title">—— 臣亮言：先帝创业未半而中道崩殂 ——</p>
+        </div>
+
+        <!-- 导航标签 -->
+        <div class="tab-nav">
+            <button class="tab-btn active" data-tab="tab-original">📜 原文品读</button>
+            <button class="tab-btn" data-tab="tab-quiz">📝 选择测试</button>
+            <button class="tab-btn" data-tab="tab-fill">✍️ 填空挑战</button>
+            <button class="tab-btn" data-tab="tab-info">ℹ️ 背景知识</button>
+        </div>
+
+        <!-- ========== 原文品读 ========== -->
+        <div class="tab-content active" id="tab-original">
+            <div class="original-text">
+                <p>臣亮言：<span class="highlight-phrase tooltip-inline">先帝创业未半而中道崩殂<span class="tooltip-box">指刘备，蜀汉开国皇帝</span></span>，今天下三分，益州疲弊，此诚<span class="highlight-phrase">危急存亡之秋</span>也。然侍卫之臣不懈于内，忠志之士忘身于外者，盖追先帝之殊遇，欲报之于陛下也。诚宜开张圣听，以光先帝遗德，恢弘志士之气，不宜妄自菲薄，引喻失义，以塞忠谏之路也。</p>
+
+                <p>宫中府中，俱为一体，陟罚臧否，不宜异同。若有作奸犯科及为忠善者，宜付有司论其刑赏，以昭陛下平明之理，不宜偏私，使内外异法也。</p>
+
+                <p>侍中、侍郎郭攸之、费祎、董允等，此皆良实，志虑忠纯，是以先帝简拔以遗陛下。愚以为宫中之事，事无大小，悉以咨之，然后施行，必能裨补阙漏，有所广益。</p>
+
+                <p>将军向宠，性行淑均，晓畅军事，试用于昔日，先帝称之曰能，是以众议举宠为督。愚以为营中之事，悉以咨之，必能使行阵和睦，优劣得所。</p>
+
+                <p><span class="highlight-phrase">亲贤臣，远小人，此先汉所以兴隆也；亲小人，远贤臣，此后汉所以倾颓也。</span>先帝在时，每与臣论此事，未尝不叹息痛恨于桓、灵也。侍中、尚书、长史、参军，此悉贞良死节之臣，愿陛下亲之信之，则汉室之隆，可计日而待也。</p>
+
+                <p>臣本布衣，躬耕于南阳，<span class="highlight-phrase">苟全性命于乱世，不求闻达于诸侯</span>。先帝不以臣卑鄙，猥自枉屈，三顾臣于草庐之中，咨臣以当世之事，由是感激，遂许先帝以驱驰。后值倾覆，受任于败军之际，奉命于危难之间，尔来二十有一年矣。</p>
+
+                <p>先帝知臣谨慎，故临崩寄臣以大事也。受命以来，夙夜忧叹，恐托付不效，以伤先帝之明，故五月渡泸，深入不毛。今南方已定，兵甲已足，当奖率三军，<span class="highlight-phrase">北定中原</span>，庶竭驽钝，攘除奸凶，兴复汉室，还于旧都。此臣所以报先帝而忠陛下之职分也。至于斟酌损益，进尽忠言，则攸之、祎、允之任也。</p>
+
+                <p>愿陛下托臣以讨贼兴复之效，不效，则治臣之罪，以告先帝之灵。若无兴德之言，则责攸之、祎、允等之慢，以彰其咎。陛下亦宜自谋，以咨诹善道，察纳雅言，深追先帝遗诏。臣不胜受恩感激。</p>
+
+                <p><strong>今当远离，临表涕零，不知所言。</strong></p>
+            </div>
+        </div>
+
+        <!-- ========== 选择测试 ========== -->
+        <div class="tab-content" id="tab-quiz">
+            <div class="quiz-section">
+                <h3>📝 《出师表》选择题测试</h3>
+                <div id="quiz-container">
+                    <!-- 题目由JS动态生成 -->
+                </div>
+                <div class="btn-group">
+                    <button class="btn" id="btn-submit-quiz">提交答案</button>
+                    <button class="btn btn-outline" id="btn-reset-quiz">重新作答</button>
+                </div>
+                <div class="score-display" id="quiz-score">
+                    你的得分：<span class="score-number" id="quiz-score-num">0</span> / <span id="quiz-total">0</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== 填空挑战 ========== -->
+        <div class="tab-content" id="tab-fill">
+            <div class="quiz-section">
+                <h3>✍️ 名句填空挑战</h3>
+                <div class="fill-blank-text" id="fill-container">
+                    <!-- 由JS动态生成 -->
+                </div>
+                <div class="btn-group" style="margin-top:20px;">
+                    <button class="btn" id="btn-check-fill">检查填空</button>
+                    <button class="btn btn-outline" id="btn-reset-fill">重新填写</button>
+                </div>
+                <div class="score-display" id="fill-score">
+                    填空得分：<span class="score-number" id="fill-score-num">0</span> / <span id="fill-total">0</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== 背景知识 ========== -->
+        <div class="tab-content" id="tab-info">
+            <div class="original-text" style="column-count:1;">
+                <h3 style="text-align:center;color:var(--accent);letter-spacing:2px;margin-bottom:16px;">ℹ️ 《出师表》背景知识</h3>
+                <p><strong>创作背景：</strong>蜀汉建兴五年（公元227年），诸葛亮率军北上，驻扎汉中，准备出师北伐曹魏。临行前，他向后主刘禅上呈此表，劝谏后主继承先帝遗志，亲贤远佞，励精图治，同时表达自己尽忠报国的决心。</p>
+                <p><strong>文学地位：</strong>《出师表》是中国古代散文名篇之一，与《陈情表》《祭十二郎文》等并称。全文情真意切、言辞恳切，既有政治远见，又饱含君臣之义、家国之情，被后人誉为"千古第一表"。</p>
+                <p><strong>核心思想：</strong>劝谏后主"开张圣听"、"亲贤臣，远小人"；表达自己"鞠躬尽瘁，死而后已"的忠诚；展现儒家士大夫的家国担当精神。</p>
+                <p><strong>名句摘录：</strong></p>
+                <ul style="padding-left:2em;line-height:2.2;">
+                    <li>"亲贤臣，远小人，此先汉所以兴隆也。"</li>
+                    <li>"苟全性命于乱世，不求闻达于诸侯。"</li>
+                    <li>"受任于败军之际，奉命于危难之间。"</li>
+                    <li>"鞠躬尽瘁，死而后已。"（后出师表）</li>
+                    <li>"今当远离，临表涕零，不知所言。"</li>
+                </ul>
+                <p style="margin-top:12px;"><strong>历史影响：</strong>此表成为后世忠臣典范，无数文人志士从中汲取精神力量。南宋陆游诗云："出师一表真名世，千载谁堪伯仲间。"</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <div class="footer-note">
+        📖 出师表 · 诸葛亮 · 公元227年 &nbsp;|&nbsp; 古文学习测试网站
+    </div>
+
+    <script>
+        // ============ 标签切换 ============
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                tabBtns.forEach(b => b.classList.remove('active'));
+                tabContents.forEach(c => c.classList.remove('active'));
+                btn.classList.add('active');
+                const targetId = btn.getAttribute('data-tab');
+                document.getElementById(targetId).classList.add('active');
+            });
+        });
+
+        // ============ 选择题数据 ============
+        const quizData = [{
+            q: '《出师表》是诸葛亮写给谁的表文？',
+            options: ['曹操', '刘备', '刘禅', '孙权'],
+            answer: 2,
+            explanation: '《出师表》是诸葛亮在出师北伐前写给后主刘禅的奏表。'
+        }, {
+            q: '"今天下三分，益州疲弊"中的"益州"指哪里？',
+            options: ['荆州地区', '蜀汉统治区域', '东吴地区', '中原地区'],
+            answer: 1,
+            explanation: '益州是蜀汉的核心统治区域，大致相当于今四川、重庆及云南、贵州部分地区。'
+        }, {
+            q: '"亲贤臣，远小人"的下句是？',
+            options: ['此国家所以兴隆也', '此先汉所以兴隆也', '此后汉所以倾颓也', '此社稷所以安定也'],
+            answer: 1,
+            explanation: '原句为"亲贤臣，远小人，此先汉所以兴隆也"。'
+        }, {
+            q: '诸葛亮"躬耕于南阳"时自比于谁？',
+            options: ['伊尹、姜尚', '管仲、乐毅', '张良、韩信', '萧何、曹参'],
+            answer: 1,
+            explanation: '诸葛亮在南阳躬耕时，常自比于管仲、乐毅，时人未许，唯好友深信其才。'
+        }, {
+            q: '"三顾臣于草庐之中"说的是哪个著名典故？',
+            options: ['七擒孟获', '三顾茅庐', '草船借箭', '空城计'],
+            answer: 1,
+            explanation: '刘备三次亲自到草庐拜访诸葛亮，请其出山辅佐，史称"三顾茅庐"。'
+        }, {
+            q: '"受任于败军之际，奉命于危难之间"指的是什么事件？',
+            options: ['赤壁之战', '官渡之战', '长坂坡之战后出使东吴', '街亭之战'],
+            answer: 2,
+            explanation: '指刘备在长坂坡被曹操击败后，诸葛亮奉命出使东吴，联吴抗曹的危急时刻。'
+        }, {
+            q: '诸葛亮"五月渡泸，深入不毛"是为了平定哪里？',
+            options: ['中原', '南中（云南地区）', '荆州', '汉中'],
+            answer: 1,
+            explanation: '"渡泸"指渡过泸水（今金沙江），深入南中平定孟获等叛乱，即"七擒孟获"的故事背景。'
+        }, {
+            q: '下列哪位不是诸葛亮在表中推荐给刘禅的贤臣？',
+            options: ['郭攸之', '费祎', '董允', '姜维'],
+            answer: 3,
+            explanation: '表中推荐了郭攸之、费祎、董允、向宠等，姜维是后来才归附蜀汉的将领，此时尚未被推荐。'
+        }, ];
+        const quizTotal = quizData.length;
+
+        // ============ 渲染选择题 ============
+        const quizContainer = document.getElementById('quiz-container');
+        const quizScoreDisplay = document.getElementById('quiz-score');
+        const quizScoreNum = document.getElementById('quiz-score-num');
+        const quizTotalSpan = document.getElementById('quiz-total');
+        quizTotalSpan.textContent = quizTotal;
+
+        function renderQuiz() {
+            let html = '';
+            quizData.forEach((item, index) => {
+                html += `
+                    <div class="quiz-item" data-index="${index}">
+                        <div class="quiz-question">${index + 1}. ${item.q}</div>
+                        <div class="quiz-options">
+                            ${item.options.map((opt, oi) => `
+                                <label class="quiz-option" data-qindex="${index}" data-oindex="${oi}">
+                                    <input type="radio" name="q${index}" value="${oi}">
+                                    <span>${String.fromCharCode(65 + oi)}. ${opt}</span>
+                                </label>
+                            `).join('')}
+                        </div>
+                        <div class="quiz-feedback" id="feedback-${index}"></div>
+                    </div>
+                `;
+            });
+            quizContainer.innerHTML = html;
+        }
+        renderQuiz();
+
+        // ============ 提交选择题 ============
+        document.getElementById('btn-submit-quiz').addEventListener('click', () => {
+            let score = 0;
+            quizData.forEach((item, index) => {
+                const selected = document.querySelector(`input[name="q${index}"]:checked`);
+                const feedbackEl = document.getElementById(`feedback-${index}`);
+                const allOptions = document.querySelectorAll(`.quiz-option[data-qindex="${index}"]`);
+
+                // 清除之前的样式
+                allOptions.forEach(opt => opt.classList.remove('correct-choice', 'wrong-choice'));
+                if (feedbackEl) {
+                    feedbackEl.classList.remove('show', 'correct', 'incorrect');
+                }
+
+                if (selected) {
+                    const selectedValue = parseInt(selected.value);
+                    const selectedOption = document.querySelector(
+                        `.quiz-option[data-qindex="${index}"][data-oindex="${selectedValue}"]`);
+                    const correctOption = document.querySelector(
+                        `.quiz-option[data-qindex="${index}"][data-oindex="${item.answer}"]`);
+
+                    if (selectedValue === item.answer) {
+                        score++;
+                        if (selectedOption) selectedOption.classList.add('correct-choice');
+                        if (feedbackEl) {
+                            feedbackEl.textContent = '✅ 正确！' + item.explanation;
+                            feedbackEl.classList.add('show', 'correct');
+                        }
+                    } else {
+                        if (selectedOption) selectedOption.classList.add('wrong-choice');
+                        if (correctOption) correctOption.classList.add('correct-choice');
+                        if (feedbackEl) {
+                            feedbackEl.textContent = '❌ 错误！' + item.explanation;
+                            feedbackEl.classList.add('show', 'incorrect');
+                        }
+                    }
+                } else {
+                    // 未作答
+                    if (feedbackEl) {
+                        feedbackEl.textContent = '⚠️ 未作答。正确答案：' + item.options[item.answer] + '。' + item
+                            .explanation;
+                        feedbackEl.classList.add('show', 'incorrect');
+                    }
+                    const correctOption = document.querySelector(
+                        `.quiz-option[data-qindex="${index}"][data-oindex="${item.answer}"]`);
+                    if (correctOption) correctOption.classList.add('correct-choice');
+                }
+            });
+            quizScoreNum.textContent = score;
+            quizScoreDisplay.classList.add('show');
+            quizScoreDisplay.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        });
+
+        document.getElementById('btn-reset-quiz').addEventListener('click', () => {
+            const allRadios = document.querySelectorAll('#quiz-container input[type="radio"]');
+            allRadios.forEach(r => r.checked = false);
+            const allOptions = document.querySelectorAll('#quiz-container .quiz-option');
+            allOptions.forEach(opt => opt.classList.remove('correct-choice', 'wrong-choice'));
+            const allFeedbacks = document.querySelectorAll('#quiz-container .quiz-feedback');
+            allFeedbacks.forEach(f => f.classList.remove('show', 'correct', 'incorrect'));
+            quizScoreDisplay.classList.remove('show');
+            quizScoreNum.textContent = '0';
+        });
+
+        // ============ 填空数据 ============
+        const fillData = [
+            { prefix: '亲贤臣，远小人，此', blank: '先汉', suffix: '所以兴隆也；亲小人，远贤臣，此', blank2: '后汉',
+                suffix2: '所以倾颓也。', answer1: '先汉', answer2: '后汉' },
+            { prefix: '苟全性命于乱世，', blank: '不求闻达', suffix: '于诸侯。', answer1: '不求闻达', answer2: null },
+            { prefix: '受任于败军之际，', blank: '奉命', suffix: '于危难之间。', answer1: '奉命', answer2: null },
+            { prefix: '今当远离，', blank: '临表涕零', suffix: '，不知所言。', answer1: '临表涕零', answer2: null },
+            { prefix: '诚宜', blank: '开张圣听', suffix: '，以光先帝遗德，恢弘志士之气。', answer1: '开张圣听', answer2: null },
+            { prefix: '陛下亦宜自谋，以咨诹善道，', blank: '察纳雅言', suffix: '，深追先帝遗诏。', answer1: '察纳雅言', answer2: null },
+        ];
+        const fillTotal = fillData.reduce((sum, item) => sum + (item.answer2 ? 2 : 1), 0);
+
+        const fillContainer = document.getElementById('fill-container');
+        const fillScoreDisplay = document.getElementById('fill-score');
+        const fillScoreNum = document.getElementById('fill-score-num');
+        const fillTotalSpan = document.getElementById('fill-total');
+        fillTotalSpan.textContent = fillTotal;
+
+        function renderFill() {
+            let html = '';
+            fillData.forEach((item, index) => {
+                html += `<p style="margin-bottom:14px;text-indent:2em;">`;
+                html += `${index + 1}. ${item.prefix}<input type="text" class="blank-input" data-fillindex="${index}" data-blank="1" placeholder="______">${item.suffix}`;
+                if (item.blank2 && item.answer2) {
+                    html +=
+                        `<input type="text" class="blank-input" data-fillindex="${index}" data-blank="2" placeholder="______">${item.suffix2}`;
+                }
+                html += `</p>`;
+            });
+            fillContainer.innerHTML = html;
+        }
+        renderFill();
+
+        // ============ 检查填空 ============
+        document.getElementById('btn-check-fill').addEventListener('click', () => {
+            let score = 0;
+            const allInputs = document.querySelectorAll('#fill-container .blank-input');
+            allInputs.forEach(input => {
+                const fillIndex = parseInt(input.getAttribute('data-fillindex'));
+                const blankNum = parseInt(input.getAttribute('data-blank'));
+                const userAnswer = input.value.trim();
+                const correctAnswer = blankNum === 1 ? fillData[fillIndex].answer1 : fillData[fillIndex]
+                    .answer2;
+
+                input.classList.remove('correct-fill', 'wrong-fill');
+                if (userAnswer === correctAnswer) {
+                    input.classList.add('correct-fill');
+                    score++;
+                } else if (userAnswer !== '') {
+                    input.classList.add('wrong-fill');
+                    // 显示正确答案
+                    input.title = '正确答案：' + correctAnswer;
+                } else {
+                    input.classList.add('wrong-fill');
+                    input.placeholder = '正确答案：' + correctAnswer;
+                }
+            });
+            fillScoreNum.textContent = score;
+            fillScoreDisplay.classList.add('show');
+            fillScoreDisplay.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        });
+
+        document.getElementById('btn-reset-fill').addEventListener('click', () => {
+            const allInputs = document.querySelectorAll('#fill-container .blank-input');
+            allInputs.forEach(input => {
+                input.value = '';
+                input.classList.remove('correct-fill', 'wrong-fill');
+                input.placeholder = '______';
+                input.title = '';
+            });
+            fillScoreDisplay.classList.remove('show');
+            fillScoreNum.textContent = '0';
+        });
+
+        // ============ 回车键提交填空 ============
+        fillContainer.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                document.getElementById('btn-check-fill').click();
+            }
+        });
+
+        console.log('📜 《出师表》测试网站已就绪');
+        console.log('   - 原文品读：包含注释气泡，悬停高亮词可见解释');
+        console.log('   - 选择测试：' + quizTotal + '道选择题');
+        console.log('   - 填空挑战：' + fillTotal + '个填空');
+        console.log('   - 背景知识：了解创作背景与文学价值');
+        console.log('   🏮 祝学习愉快！');
+    </script>
+</body>
+</html>

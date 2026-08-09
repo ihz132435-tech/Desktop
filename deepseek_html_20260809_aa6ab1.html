@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GitHub Desktop 测试网页</title>
+    <style>
+        /* ===== 全局重置 & 字体 ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: linear-gradient(145deg, #f6f9fc 0%, #e9f0f5 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* ===== 卡片容器 ===== */
+        .card {
+            max-width: 700px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 42px;
+            padding: 48px 40px;
+            box-shadow:
+                0 20px 60px rgba(0, 20, 40, 0.12),
+                0 8px 24px rgba(0, 0, 0, 0.04),
+                inset 0 1px 0 rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: transform 0.25s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+        }
+
+        /* ===== 头部 ===== */
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 28px;
+        }
+
+        .header .logo {
+            width: 52px;
+            height: 52px;
+            background: linear-gradient(135deg, #24292e, #1b1f23);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 28px;
+            font-weight: 600;
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+            flex-shrink: 0;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            background: linear-gradient(135deg, #1b1f23, #3d444d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header .badge {
+            margin-left: auto;
+            background: #2da44e;
+            color: #fff;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 6px 16px;
+            border-radius: 100px;
+            letter-spacing: 0.2px;
+            box-shadow: 0 2px 8px rgba(45, 164, 78, 0.25);
+            white-space: nowrap;
+        }
+
+        /* ===== 状态指示器 ===== */
+        .status-bar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(36, 41, 46, 0.04);
+            padding: 12px 20px;
+            border-radius: 60px;
+            margin-bottom: 32px;
+            border: 1px solid rgba(0, 0, 0, 0.04);
+        }
+
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #2da44e;
+            box-shadow: 0 0 0 4px rgba(45, 164, 78, 0.15);
+            flex-shrink: 0;
+            transition: background 0.3s, box-shadow 0.3s;
+        }
+
+        .status-dot.offline {
+            background: #cf222e;
+            box-shadow: 0 0 0 4px rgba(207, 34, 46, 0.15);
+        }
+
+        .status-text {
+            font-size: 15px;
+            font-weight: 500;
+            color: #1b1f23;
+        }
+
+        .status-text span {
+            font-weight: 400;
+            color: #57606a;
+        }
+
+        /* ===== 内容区域 ===== */
+        .content {
+            margin-bottom: 32px;
+        }
+
+        .content p {
+            font-size: 16px;
+            line-height: 1.7;
+            color: #24292e;
+            margin-bottom: 20px;
+        }
+
+        .content p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* ===== 功能网格 ===== */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin: 24px 0 12px;
+        }
+
+        .feature-item {
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 18px;
+            padding: 18px 16px;
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            text-align: center;
+            transition: background 0.2s, box-shadow 0.2s;
+            cursor: default;
+        }
+
+        .feature-item:hover {
+            background: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+        }
+
+        .feature-item .icon {
+            font-size: 28px;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .feature-item .label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #1b1f23;
+        }
+
+        .feature-item .desc {
+            font-size: 12px;
+            color: #57606a;
+            margin-top: 2px;
+        }
+
+        /* ===== 互动按钮区 ===== */
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 28px;
+            padding-top: 28px;
+            border-top: 1px solid rgba(0, 0, 0, 0.06);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 28px;
+            border-radius: 60px;
+            font-size: 15px;
+            font-weight: 600;
+            border: none;
+            background: #f0f2f4;
+            color: #1b1f23;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+            flex: 1 1 auto;
+            min-width: 120px;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: #1b1f23;
+            color: #fff;
+            box-shadow: 0 4px 14px rgba(27, 31, 35, 0.15);
+        }
+
+        .btn-primary:hover {
+            background: #24292e;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(27, 31, 35, 0.2);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1.5px solid #d0d7de;
+        }
+
+        .btn-outline:hover {
+            background: rgba(0, 0, 0, 0.02);
+            border-color: #8b949e;
+        }
+
+        .btn-success {
+            background: #2da44e;
+            color: #fff;
+            box-shadow: 0 4px 14px rgba(45, 164, 78, 0.2);
+        }
+
+        .btn-success:hover {
+            background: #22863a;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(45, 164, 78, 0.25);
+        }
+
+        /* ===== 点击反馈 ===== */
+        #clickMessage {
+            margin-top: 18px;
+            padding: 14px 20px;
+            border-radius: 16px;
+            background: rgba(27, 31, 35, 0.03);
+            border: 1px dashed rgba(27, 31, 35, 0.08);
+            font-size: 14px;
+            color: #57606a;
+            text-align: center;
+            transition: all 0.25s;
+            min-height: 52px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #clickMessage.active {
+            background: rgba(45, 164, 78, 0.06);
+            border-color: rgba(45, 164, 78, 0.2);
+            color: #1b1f23;
+        }
+
+        /* ===== 页脚 ===== */
+        .footer {
+            margin-top: 28px;
+            font-size: 13px;
+            color: #8b949e;
+            text-align: center;
+            letter-spacing: 0.2px;
+            border-top: 1px solid rgba(0, 0, 0, 0.04);
+            padding-top: 24px;
+        }
+
+        .footer a {
+            color: #1b1f23;
+            text-decoration: none;
+            font-weight: 500;
+            border-bottom: 1px dotted rgba(27, 31, 35, 0.2);
+        }
+
+        .footer a:hover {
+            border-bottom-color: #1b1f23;
+        }
+
+        /* ===== 响应式 ===== */
+        @media (max-width: 540px) {
+            .card {
+                padding: 32px 20px;
+                border-radius: 28px;
+            }
+
+            .header h1 {
+                font-size: 20px;
+            }
+
+            .header .badge {
+                font-size: 11px;
+                padding: 4px 12px;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+
+            .feature-item {
+                padding: 14px 10px;
+            }
+
+            .feature-item .icon {
+                font-size: 22px;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .status-bar {
+                flex-wrap: wrap;
+                gap: 6px;
+                padding: 10px 16px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header .logo {
+                width: 42px;
+                height: 42px;
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="card" role="main">
+
+        <!-- 头部 -->
+        <div class="header">
+            <div class="logo" aria-hidden="true">⌘</div>
+            <h1>GitHub Desktop 测试</h1>
+            <span class="badge">v1.0</span>
+        </div>
+
+        <!-- 状态栏 -->
+        <div class="status-bar" id="statusBar">
+            <span class="status-dot" id="statusDot"></span>
+            <span class="status-text" id="statusText">
+                ✅ 仓库就绪 · <span id="repoName">test-repo</span>
+            </span>
+        </div>
+
+        <!-- 主要内容 -->
+        <div class="content">
+            <p>
+                这是一个专为 <strong>GitHub Desktop</strong> 设计的测试页面。
+                你可以直接把这个文件夹拖入 GitHub Desktop 进行版本管理，
+                或者点击下方按钮模拟常见的 Git 工作流操作。
+            </p>
+
+            <!-- 功能网格 -->
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <span class="icon">📁</span>
+                    <div class="label">已初始化</div>
+                    <div class="desc">包含 .git 文件夹</div>
+                </div>
+                <div class="feature-item">
+                    <span class="icon">🌐</span>
+                    <div class="label">静态页面</div>
+                    <div class="desc">纯 HTML / CSS / JS</div>
+                </div>
+                <div class="feature-item">
+                    <span class="icon">📄</span>
+                    <div class="label">README.md</div>
+                    <div class="desc">项目说明文件</div>
+                </div>
+                <div class="feature-item">
+                    <span class="icon">🔒</span>
+                    <div class="label">.gitignore</div>
+                    <div class="desc">忽略不需要的文件</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 按钮区域 -->
+        <div class="actions">
+            <button class="btn btn-primary" id="btnCommit">
+                <span>📦</span> 模拟提交
+            </button>
+            <button class="btn btn-outline" id="btnStatus">
+                <span>🔍</span> 检查状态
+            </button>
+            <button class="btn btn-success" id="btnPush">
+                <span>🚀</span> 模拟推送
+            </button>
+        </div>
+
+        <!-- 点击反馈 -->
+        <div id="clickMessage">
+            💡 点击上方按钮查看交互反馈
+        </div>
+
+        <!-- 页脚 -->
+        <div class="footer">
+            <span>🛠️ 用 GitHub Desktop 打开此文件夹 · </span>
+            <a href="#" id="fakeLink">了解更多</a>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            'use strict';
+
+            // DOM 引用
+            const statusDot = document.getElementById('statusDot');
+            const statusText = document.getElementById('statusText');
+            const repoNameSpan = document.getElementById('repoName');
+            const clickMessage = document.getElementById('clickMessage');
+            const btnCommit = document.getElementById('btnCommit');
+            const btnStatus = document.getElementById('btnStatus');
+            const btnPush = document.getElementById('btnPush');
+            const fakeLink = document.getElementById('fakeLink');
+
+            // ===== 辅助函数 =====
+            function setStatus(type, message) {
+                // type: 'online' | 'offline' | 'info'
+                statusDot.className = 'status-dot';
+                if (type === 'offline') {
+                    statusDot.classList.add('offline');
+                }
+                // 更新文字
+                const msg = message || (type === 'offline' ? '⚠️ 未连接' : '✅ 仓库就绪');
+                statusText.innerHTML = msg;
+            }
+
+            function showMessage(text, isActive) {
+                clickMessage.textContent = text;
+                clickMessage.className = isActive ? 'active' : '';
+            }
+
+            // 随机模拟耗时
+            function simulateDelay(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+
+            // ===== 按钮事件 =====
+
+            // 1. 模拟提交
+            btnCommit.addEventListener('click', async function() {
+                const originalText = this.innerHTML;
+                this.innerHTML = '<span>⏳</span> 提交中...';
+                this.disabled = true;
+                showMessage('⏳ 正在模拟提交操作 ...', false);
+
+                await simulateDelay(800);
+
+                // 随机成功 / 失败 (增加趣味)
+                const success = Math.random() > 0.15;
+                if (success) {
+                    showMessage('✅ 模拟提交成功！ (commit hash: a1b2c3d)', true);
+                    setStatus('online', '✅ 提交成功 · <span>' + repoNameSpan.textContent + '</span>');
+                } else {
+                    showMessage('❌ 模拟提交失败：有未暂存的更改，请先 add', false);
+                    setStatus('offline', '⚠️ 提交失败 · 请检查更改');
+                }
+
+                this.innerHTML = originalText;
+                this.disabled = false;
+            });
+
+            // 2. 检查状态
+            btnStatus.addEventListener('click', async function() {
+                const originalText = this.innerHTML;
+                this.innerHTML = '<span>⏳</span> 检查中...';
+                this.disabled = true;
+                showMessage('🔍 正在检查仓库状态 ...', false);
+
+                await simulateDelay(500);
+
+                const statuses = [
+                    '✅ 工作区干净，没有未提交的更改',
+                    '📝 有 2 个文件已修改，等待提交',
+                    '📁 新增 1 个未跟踪的文件',
+                    '🔄 本地分支领先 origin 1 个提交',
+                ];
+                const randomStatus = statuses[Math.floor(Math.random() * statuses.length)];
+
+                // 根据状态改变点颜色
+                if (randomStatus.includes('干净') || randomStatus.includes('领先')) {
+                    setStatus('online', '✅ ' + randomStatus);
+                } else {
+                    setStatus('offline', '⚠️ ' + randomStatus);
+                }
+
+                showMessage('📊 ' + randomStatus, true);
+                this.innerHTML = originalText;
+                this.disabled = false;
+            });
+
+            // 3. 模拟推送
+            btnPush.addEventListener('click', async function() {
+                const originalText = this.innerHTML;
+                this.innerHTML = '<span>⏳</span> 推送中...';
+                this.disabled = true;
+                showMessage('🚀 正在模拟推送到远程 ...', false);
+
+                await simulateDelay(1200);
+
+                const success = Math.random() > 0.2;
+                if (success) {
+                    showMessage('🎉 模拟推送成功！已同步到 origin/main', true);
+                    setStatus('online', '✅ 推送成功 · 已同步远程');
+                } else {
+                    showMessage('⚠️ 模拟推送失败：远程有新的提交，请先 pull', false);
+                    setStatus('offline', '⚠️ 推送失败 · 需要先 pull');
+                }
+
+                this.innerHTML = originalText;
+                this.disabled = false;
+            });
+
+            // 4. 页脚 "了解更多" 链接 (模拟)
+            fakeLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                showMessage('📖 这是一个模拟链接 — 在 GitHub Desktop 中打开项目即可开始', true);
+                setStatus('online', '✅ 已就绪 · ' + repoNameSpan.textContent);
+            });
+
+            // ===== 页面加载完成 =====
+            // 随机生成一个仓库名 (让每次刷新有点不同)
+            const names = ['test-repo', 'my-first-repo', 'hello-git', 'desktop-demo', 'sandbox'];
+            const randomName = names[Math.floor(Math.random() * names.length)];
+            repoNameSpan.textContent = randomName;
+
+            // 初始状态
+            setStatus('online', '✅ 仓库就绪 · <span>' + randomName + '</span>');
+            showMessage('💡 点击上方按钮查看交互反馈', false);
+
+            // 在控制台输出提示
+            console.log('🚀 GitHub Desktop 测试页面已加载');
+            console.log('📁 仓库名: ' + randomName);
+            console.log('💡 提示: 你可以用 GitHub Desktop 打开此文件夹进行版本管理');
+
+        })();
+    </script>
+</body>
+</html>

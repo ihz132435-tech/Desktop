@@ -1,0 +1,420 @@
+/* ============================================================
+   test-style.css  —  用于 GitHub Desktop 的 CSS 测试文件
+   包含：布局、颜色、动画、伪类、Flex/Grid、响应式等
+   ============================================================ */
+
+/* ---------- 全局重置 & 基础 ---------- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: #f0f4f8;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  transition: background 0.3s;
+}
+
+/* ---------- 测试卡片（纯样式容器） ---------- */
+.test-card {
+  max-width: 720px;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(8px);
+  border-radius: 40px;
+  padding: 40px 36px;
+  box-shadow: 0 20px 60px rgba(0, 20, 40, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  transition: transform 0.25s ease, box-shadow 0.3s;
+}
+
+.test-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 28px 72px rgba(0, 20, 40, 0.16);
+}
+
+/* ---------- 标题区域 ---------- */
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 28px;
+}
+
+.logo {
+  width: 52px;
+  height: 52px;
+  background: linear-gradient(135deg, #24292e, #1b1f23);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 26px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.card-header h1 {
+  font-size: 26px;
+  font-weight: 700;
+  color: #1b1f23;
+  letter-spacing: -0.3px;
+}
+
+.badge {
+  margin-left: auto;
+  background: #2da44e;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 6px 18px;
+  border-radius: 100px;
+  white-space: nowrap;
+  transition: background 0.2s;
+}
+
+.badge:hover {
+  background: #22863a;
+}
+
+/* ---------- 状态指示器 ---------- */
+.status-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(36, 41, 46, 0.04);
+  padding: 12px 20px;
+  border-radius: 60px;
+  margin-bottom: 28px;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.status-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #2da44e;
+  box-shadow: 0 0 0 4px rgba(45, 164, 78, 0.15);
+  flex-shrink: 0;
+  animation: pulse-dot 2s infinite;
+}
+
+/* 脉冲动画（模拟在线状态） */
+@keyframes pulse-dot {
+  0% { box-shadow: 0 0 0 4px rgba(45, 164, 78, 0.15); }
+  50% { box-shadow: 0 0 0 8px rgba(45, 164, 78, 0.05); }
+  100% { box-shadow: 0 0 0 4px rgba(45, 164, 78, 0.15); }
+}
+
+.status-dot.offline {
+  background: #cf222e;
+  box-shadow: 0 0 0 4px rgba(207, 34, 46, 0.15);
+  animation-name: pulse-dot-offline;
+}
+
+@keyframes pulse-dot-offline {
+  0% { box-shadow: 0 0 0 4px rgba(207, 34, 46, 0.15); }
+  50% { box-shadow: 0 0 0 8px rgba(207, 34, 46, 0.05); }
+  100% { box-shadow: 0 0 0 4px rgba(207, 34, 46, 0.15); }
+}
+
+.status-text {
+  font-size: 15px;
+  font-weight: 500;
+  color: #1b1f23;
+}
+.status-text span {
+  font-weight: 400;
+  color: #57606a;
+}
+
+/* ---------- 内容文字 ---------- */
+.content p {
+  font-size: 16px;
+  line-height: 1.7;
+  color: #24292e;
+  margin-bottom: 18px;
+}
+.content p:last-child {
+  margin-bottom: 0;
+}
+
+/* ---------- 功能网格 (Flex/Grid 演示) ---------- */
+.feature-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin: 24px 0 16px;
+}
+
+.feature-item {
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 18px;
+  padding: 18px 16px;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  text-align: center;
+  transition: background 0.2s, box-shadow 0.2s, transform 0.15s;
+  cursor: default;
+}
+
+.feature-item:hover {
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  transform: scale(1.02);
+}
+
+.feature-item .icon {
+  font-size: 28px;
+  display: block;
+  margin-bottom: 6px;
+}
+.feature-item .label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1b1f23;
+}
+.feature-item .desc {
+  font-size: 12px;
+  color: #57606a;
+  margin-top: 2px;
+}
+
+/* ---------- 按钮组 (纯 CSS 交互演示) ---------- */
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+  padding-top: 28px;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 28px;
+  border-radius: 60px;
+  font-size: 15px;
+  font-weight: 600;
+  border: none;
+  background: #f0f2f4;
+  color: #1b1f23;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex: 1 1 auto;
+  min-width: 120px;
+  text-decoration: none;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.btn-primary {
+  background: #1b1f23;
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(27, 31, 35, 0.15);
+}
+.btn-primary:hover {
+  background: #24292e;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(27, 31, 35, 0.2);
+}
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1.5px solid #d0d7de;
+}
+.btn-outline:hover {
+  background: rgba(0, 0, 0, 0.02);
+  border-color: #8b949e;
+}
+
+.btn-success {
+  background: #2da44e;
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(45, 164, 78, 0.2);
+}
+.btn-success:hover {
+  background: #22863a;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(45, 164, 78, 0.25);
+}
+.btn-success:active {
+  transform: translateY(0);
+}
+
+/* 禁用状态（仅演示） */
+.btn:disabled {
+  opacity: 0.5;
+  pointer-events: none;
+  filter: grayscale(0.3);
+}
+
+/* ---------- 消息区域 (纯 CSS 反馈) ---------- */
+.message-box {
+  margin-top: 18px;
+  padding: 14px 20px;
+  border-radius: 16px;
+  background: rgba(27, 31, 35, 0.03);
+  border: 1px dashed rgba(27, 31, 35, 0.08);
+  font-size: 14px;
+  color: #57606a;
+  text-align: center;
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+}
+
+/* 通过 :target 或 :hover 模拟激活（这里用 hover 演示） */
+.message-box:hover {
+  background: rgba(45, 164, 78, 0.06);
+  border-color: rgba(45, 164, 78, 0.2);
+  color: #1b1f23;
+}
+
+/* ---------- 页脚 ---------- */
+.footer {
+  margin-top: 28px;
+  font-size: 13px;
+  color: #8b949e;
+  text-align: center;
+  border-top: 1px solid rgba(0, 0, 0, 0.04);
+  padding-top: 24px;
+}
+.footer a {
+  color: #1b1f23;
+  text-decoration: none;
+  font-weight: 500;
+  border-bottom: 1px dotted rgba(27, 31, 35, 0.2);
+  transition: border-color 0.2s;
+}
+.footer a:hover {
+  border-bottom-color: #1b1f23;
+}
+
+/* ---------- 动画演示 ---------- */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
+  100% { transform: translateY(0px); }
+}
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* ---------- 响应式测试 ---------- */
+@media (max-width: 600px) {
+  .test-card {
+    padding: 28px 18px;
+    border-radius: 28px;
+  }
+  .card-header h1 {
+    font-size: 20px;
+  }
+  .badge {
+    font-size: 11px;
+    padding: 4px 12px;
+  }
+  .feature-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .feature-item {
+    padding: 14px 10px;
+  }
+  .feature-item .icon {
+    font-size: 22px;
+  }
+  .actions {
+    flex-direction: column;
+  }
+  .btn {
+    width: 100%;
+    justify-content: center;
+  }
+  .status-bar {
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 10px 16px;
+  }
+}
+
+@media (max-width: 400px) {
+  .feature-grid {
+    grid-template-columns: 1fr;
+  }
+  .logo {
+    width: 42px;
+    height: 42px;
+    font-size: 20px;
+  }
+}
+
+/* ---------- 更多测试：自定义属性、渐变、滤镜等 ---------- */
+:root {
+  --test-primary: #2da44e;
+  --test-shadow: 0 8px 24px rgba(0,0,0,0.08);
+}
+
+.test-card {
+  background: rgba(255, 255, 255, 0.85);
+}
+
+/* 一个可选的暗色模式（通过 prefers-color-scheme 测试） */
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #1b1f23;
+  }
+  .test-card {
+    background: rgba(36, 41, 46, 0.9);
+    border-color: rgba(255,255,255,0.08);
+  }
+  .card-header h1,
+  .status-text,
+  .content p,
+  .feature-item .label,
+  .footer a {
+    color: #e6edf3;
+  }
+  .feature-item {
+    background: rgba(255,255,255,0.04);
+    border-color: rgba(255,255,255,0.06);
+  }
+  .feature-item:hover {
+    background: rgba(255,255,255,0.08);
+  }
+  .btn-outline {
+    border-color: #3d444d;
+    color: #e6edf3;
+  }
+  .btn-outline:hover {
+    background: rgba(255,255,255,0.04);
+  }
+  .status-bar {
+    background: rgba(255,255,255,0.04);
+  }
+  .message-box {
+    color: #8b949e;
+    border-color: rgba(255,255,255,0.06);
+  }
+  .message-box:hover {
+    background: rgba(45, 164, 78, 0.08);
+  }
+  .footer {
+    color: #57606a;
+    border-color: rgba(255,255,255,0.06);
+  }
+}
